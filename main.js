@@ -240,6 +240,9 @@ scene("gamescene", () => {
 	//#region FUNCTIONS METHODS
 	function StartGame() {
 
+		timePassed = 0
+		difficulty = 0
+
 		if (!ApiStuff.HasMedal[0]) {
 			ngUnlockMedal(ApiStuff.Medal_IDS[0])
 			ApiStuff.HasMedal[0] = true
