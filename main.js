@@ -624,8 +624,12 @@ scene("gamescene", () => {
 	markbg.width = WIDTH
 	markbg.width = HEIGHT
 
-	onKeyPress("space", () => {
-		debug.log("Width: " + WIDTH)
+	// onKeyPress("space", () => {
+	// 	debug.log("Width: " + WIDTH)
+	// })
+	
+	onKeyPress("r", () => {
+		timer = 0
 	})
 	
 	if (WIDTH <= 860) {
