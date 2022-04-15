@@ -1,12 +1,12 @@
 import kaboom from "https://unpkg.com/kaboom@2000.1.6/dist/kaboom.mjs"
-// import { newgroundsPlugin } from 'newgrounds-boom'
+import { newgroundsPlugin } from "https://unpkg.com/newgrounds-boom@1.1.1/src/newgrounds.mjs"
 import * as ApiStuff from './ApiStuff.js'
 
 kaboom({
-	// plugins: [ newgroundsPlugin ]
+	plugins: [newgroundsPlugin]
 })
 
-// ngInit(ApiStuff.NgCore, ApiStuff.EncryptionKey)
+ngInit(ApiStuff.NgCore, ApiStuff.EncryptionKey)
 
 // CHARACTERS
 loadSprite("mark", "./sprites/characters/mark.png")
@@ -55,11 +55,19 @@ let score = 0
 
 highscore = getData("highscore")
 
+for(let i = 0; i < ApiStuff.HasMedal.length; i++) {
+	ApiStuff.HasMedal[i] = getData("hasmedal" + i)
+	console.log(ApiStuff.HasMedal[i])
+}
+
+let timePassed = 0
+
 // # MENUSCENE
 scene("menuscene", () => {	
 	let bg = add([
-		rect(WIDTH, HEIGHT),
+		rect(WIDTH + 50, HEIGHT + 50),
 		color(colors[0]),
+		pos(-50, -50),
 	]);
 	
 	let maintextO = add([
@@ -130,6 +138,12 @@ scene("menuscene", () => {
 	
 	onKeyPress("v", () => {
 		play("funni")
+	
+		if (!ApiStuff.HasMedal[6]) {
+			ngUnlockMedal(ApiStuff.Medal_IDS[6])
+			ApiStuff.HasMedal[6] = true
+			setData("hasmedal" + 6)
+		}
 	})
 
 	wait(1.0, () => {	
@@ -160,7 +174,6 @@ scene("gamescene", () => {
 	let difficulty = 1
 	let timer = 8
 	let currentTimerDiff = 6 // var to keep track of the current max time based on the difficulty
-	let timePassed = 0
 	let notmarkSpawning
 	let notmarktrolling
 	let markDistance
@@ -189,7 +202,7 @@ scene("gamescene", () => {
 	]) 
 	
 	let difficultyText = add([
-		text(0 + " | DIFF: " + 1, {
+		text(0 + " | DIFF: 0", {
 			size: 40,
 			width: 800,
 			font: "sinko",
@@ -201,9 +214,10 @@ scene("gamescene", () => {
 	]) 
 		
 	let bg = add([
-		rect(WIDTH, HEIGHT),
+		rect(WIDTH + 50, HEIGHT + 50),
 		color(colors[0]),
 		layer("bg"),
+		pos(-50, -50),
 	]);
 
 	let markbg = add([
@@ -226,24 +240,63 @@ scene("gamescene", () => {
 	//#region FUNCTIONS METHODS
 	function StartGame() {
 
+		if (!ApiStuff.HasMedal[0]) {
+			ngUnlockMedal(ApiStuff.Medal_IDS[0])
+			ApiStuff.HasMedal[0] = true
+			setData("hasmedal" + 0)
+		}
+
 		onUpdate("difficultyText", () => {
 			timePassed += dt()
 		
 			let stringTime = Math.floor((timePassed + Number.EPSILON) * 100) / 100 + ""
 
-			if (timePassed >= 10) difficulty = 2
+			if (timePassed <= 0)  difficulty = 0
+			if (hasStarted) difficulty = 1
+			if (timePassed >= 10) {
+				difficulty = 2
+
+				if (!ApiStuff.HasMedal[1]) {
+					ngUnlockMedal(ApiStuff.Medal_IDS[1])
+					ApiStuff.HasMedal[1] = true
+					setData("hasmedal" + 1)
+				}
+			}
+			
 			if (timePassed >= 20) difficulty = 3
-			if (timePassed >= 30) difficulty = 4
+			if (timePassed >= 30) {
+				difficulty = 4
+			
+				if (!ApiStuff.HasMedal[2]) {
+					ngUnlockMedal(ApiStuff.Medal_IDS[2])
+					ApiStuff.HasMedal[2] = true
+					setData("hasmedal" + 2)
+				}
+			}
+			
 			if (timePassed >= 40) difficulty = 5
 			if (timePassed >= 45) difficulty = 6
 			if (timePassed >= 50) difficulty = 7
-			if (timePassed >= 60) difficulty = 8 
-			if (timePassed >= 76) {
-
+			if (timePassed >= 60) {
+				difficulty = 8 
+			
+				if (!ApiStuff.HasMedal[3]) {
+					ngUnlockMedal(ApiStuff.Medal_IDS[3])
+					ApiStuff.HasMedal[3] = true
+					setData("hasmedal" + 3)
+				}				
+			}
+				if (timePassed >= 76) {
 				difficultyText.text = stringTime + " | DIFF = MAX!!"
 				difficultyText.color = colors[12]
 
 				notmarktrolling = true
+			
+				if (!ApiStuff.HasMedal[4]) {
+					ngUnlockMedal(ApiStuff.Medal_IDS[4])
+					ApiStuff.HasMedal[4] = true
+					setData("hasmedal" + 4)
+				}				
 			}
 
 			else {
@@ -538,7 +591,7 @@ scene("gamescene", () => {
 		})
 	}
 
-	function onclicknotmarkstuff(notmarkP) {
+	function onclicknotmarkstuff(notmarkP) {		
 		destroy(notmarkP)
 		play("wrong")
 		shake(5)
@@ -568,11 +621,6 @@ scene("gamescene", () => {
 	markbg.width = WIDTH
 	markbg.width = HEIGHT
 
-
-	onKeyPress("backspace", () => {
-		go("menuscene")
-	})
-
 	onKeyPress("space", () => {
 		debug.log("Width: " + WIDTH)
 	})
@@ -583,12 +631,16 @@ scene("gamescene", () => {
 		difficultyText.pos.y = timerText.pos.y - 45
 	}
 
-	if (hasStarted === false) {
-		onKeyPress("backspace", () => {
+	onKeyPress("backspace", () => {
+		if (!hasStarted) {
 			play("back")
 			go("menuscene")
-		})
-	} 
+		}
+
+		else {
+			shake(1)
+		}
+	})
 
 	AddBean()
 	Spawn()
@@ -627,8 +679,9 @@ scene("gamescene", () => {
 // # GAMEOVER
 scene("gameover", () => {	
 	add([
-		rect(WIDTH + 200, HEIGHT + 200),
+		rect(WIDTH + 50, HEIGHT + 50),
 		color(33, 41, 56),
+		pos(-50, -50),
 		layer("bg"),
 	]);
 	
@@ -685,8 +738,14 @@ scene("gameover", () => {
 
 	shake(20)
 
-	// ngPostScore(ApiStuff.Scoreboard_IDS[0], score.toString())
-	// ngPostScore(ApiStuff.Scoreboard_IDS[1], timePassed.toString())
+	ngPostScore(ApiStuff.Scoreboard_IDS[0], score)
+	ngPostScore(ApiStuff.Scoreboard_IDS[1], timePassed)
+
+	if (!ApiStuff.HasMedal[5]) {
+		ngUnlockMedal(ApiStuff.Medal_IDS[5])
+		ApiStuff.HasMedal[5] = true
+		setData("hasmedal" + 5)
+	}
 
 	wait(0.5, () => {
 		onMousePress(() => {
