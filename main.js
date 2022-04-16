@@ -6,7 +6,6 @@ kaboom({
 	plugins: [newgroundsPlugin],
 	width: 1170,
 	height: 660,
-	debug: false,
 })
 
 ngInit(ApiStuff.NgCore, ApiStuff.EncryptionKey)
