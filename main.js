@@ -3,7 +3,8 @@ import { newgroundsPlugin } from "https://unpkg.com/newgrounds-boom@1.1.1/src/ne
 import * as ApiStuff from './ApiStuff.js'
 
 kaboom({
-	plugins: [newgroundsPlugin]
+	plugins: [newgroundsPlugin],
+	debug: false,
 })
 
 ngInit(ApiStuff.NgCore, ApiStuff.EncryptionKey)
@@ -142,7 +143,7 @@ scene("menuscene", () => {
 		if (!ApiStuff.HasMedal[6]) {
 			ngUnlockMedal(ApiStuff.Medal_IDS[6])
 			ApiStuff.HasMedal[6] = true
-			setData("hasmedal" + 6)
+			setData("hasmedal" + 6, true)
 		}
 	})
 
@@ -246,7 +247,7 @@ scene("gamescene", () => {
 		if (!ApiStuff.HasMedal[0]) {
 			ngUnlockMedal(ApiStuff.Medal_IDS[0])
 			ApiStuff.HasMedal[0] = true
-			setData("hasmedal" + 0)
+			setData("hasmedal" + 0, true)
 		}
 
 		onUpdate("difficultyText", () => {
@@ -262,7 +263,7 @@ scene("gamescene", () => {
 				if (!ApiStuff.HasMedal[1]) {
 					ngUnlockMedal(ApiStuff.Medal_IDS[1])
 					ApiStuff.HasMedal[1] = true
-					setData("hasmedal" + 1)
+					setData("hasmedal" + 1, true)
 				}
 			}
 			
@@ -273,7 +274,7 @@ scene("gamescene", () => {
 				if (!ApiStuff.HasMedal[2]) {
 					ngUnlockMedal(ApiStuff.Medal_IDS[2])
 					ApiStuff.HasMedal[2] = true
-					setData("hasmedal" + 2)
+					setData("hasmedal" + 2, true)
 				}
 			}
 			
@@ -286,7 +287,7 @@ scene("gamescene", () => {
 				if (!ApiStuff.HasMedal[3]) {
 					ngUnlockMedal(ApiStuff.Medal_IDS[3])
 					ApiStuff.HasMedal[3] = true
-					setData("hasmedal" + 3)
+					setData("hasmedal" + 3, true)
 				}				
 			}
 				if (timePassed >= 76) {
@@ -298,7 +299,7 @@ scene("gamescene", () => {
 				if (!ApiStuff.HasMedal[4]) {
 					ngUnlockMedal(ApiStuff.Medal_IDS[4])
 					ApiStuff.HasMedal[4] = true
-					setData("hasmedal" + 4)
+					setData("hasmedal" + 4, true)
 				}				
 			}
 
@@ -335,9 +336,12 @@ scene("gamescene", () => {
 				}
 			}
 			
-			timer -= dt()
-		
+			if (!timer <= 0) {
+				timer -= dt()
+			}
+
 			if (timer <= 0) {
+				timer = 0
 				timerText.text = "0.0 - You lost."
 				difficultyText.text = "Mark."
 				scoreTextG.text = "Score: Mark."
