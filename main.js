@@ -54,10 +54,10 @@ const HEIGHT = height()
 let highscore = 0
 let score = 0
 
-highscore = localStorage.getItem("highscore")
+highscore = getData("highscore")
 
 for(let i = 0; i < ApiStuff.HasMedal.length; i++) {
-	ApiStuff.HasMedal[i] = localStorage.getItem("hasmedal" + i)
+	ApiStuff.HasMedal[i] = getData("hasmedal" + i)
 	console.log(ApiStuff.HasMedal[i])
 }
 
@@ -143,11 +143,7 @@ scene("menuscene", () => {
 		if (!ApiStuff.HasMedal[6]) {
 			ngUnlockMedal(ApiStuff.Medal_IDS[6])
 			ApiStuff.HasMedal[6] = true
-<<<<<<< HEAD
 			setData("hasmedal" + 6, true)
-=======
-			localStorage.setItem("hasmedal" + 6, true)
->>>>>>> 04d464ba7f55949f52181476bbb9e65615b7b005
 		}
 	})
 
@@ -251,11 +247,7 @@ scene("gamescene", () => {
 		if (!ApiStuff.HasMedal[0]) {
 			ngUnlockMedal(ApiStuff.Medal_IDS[0])
 			ApiStuff.HasMedal[0] = true
-<<<<<<< HEAD
 			setData("hasmedal" + 0, true)
-=======
-			localStorage.setItem("hasmedal" + 0, true)
->>>>>>> 04d464ba7f55949f52181476bbb9e65615b7b005
 		}
 
 		onUpdate("difficultyText", () => {
@@ -271,11 +263,7 @@ scene("gamescene", () => {
 				if (!ApiStuff.HasMedal[1]) {
 					ngUnlockMedal(ApiStuff.Medal_IDS[1])
 					ApiStuff.HasMedal[1] = true
-<<<<<<< HEAD
 					setData("hasmedal" + 1, true)
-=======
-					localStorage.setItem("hasmedal" + 1, true)
->>>>>>> 04d464ba7f55949f52181476bbb9e65615b7b005
 				}
 			}
 			
@@ -286,11 +274,7 @@ scene("gamescene", () => {
 				if (!ApiStuff.HasMedal[2]) {
 					ngUnlockMedal(ApiStuff.Medal_IDS[2])
 					ApiStuff.HasMedal[2] = true
-<<<<<<< HEAD
 					setData("hasmedal" + 2, true)
-=======
-					localStorage.setItem("hasmedal" + 2, true)
->>>>>>> 04d464ba7f55949f52181476bbb9e65615b7b005
 				}
 			}
 			
@@ -303,11 +287,7 @@ scene("gamescene", () => {
 				if (!ApiStuff.HasMedal[3]) {
 					ngUnlockMedal(ApiStuff.Medal_IDS[3])
 					ApiStuff.HasMedal[3] = true
-<<<<<<< HEAD
 					setData("hasmedal" + 3, true)
-=======
-					localStorage.setItem("hasmedal" + 3, true)
->>>>>>> 04d464ba7f55949f52181476bbb9e65615b7b005
 				}				
 			}
 				if (timePassed >= 76) {
@@ -319,11 +299,7 @@ scene("gamescene", () => {
 				if (!ApiStuff.HasMedal[4]) {
 					ngUnlockMedal(ApiStuff.Medal_IDS[4])
 					ApiStuff.HasMedal[4] = true
-<<<<<<< HEAD
 					setData("hasmedal" + 4, true)
-=======
-					localStorage.setItem("hasmedal" + 4, true)
->>>>>>> 04d464ba7f55949f52181476bbb9e65615b7b005
 				}				
 			}
 
@@ -596,7 +572,7 @@ scene("gamescene", () => {
 
 		if (score >= highscore) {
 			highscore = score
-			localStorage.setItem("highscore", highscore)
+			setData("highscore", highscore)
 		}
 	
 		let randomColor = Math.floor(rand(1, 6))
@@ -779,7 +755,7 @@ scene("gameover", () => {
 	if (!ApiStuff.HasMedal[5]) {
 		ngUnlockMedal(ApiStuff.Medal_IDS[5])
 		ApiStuff.HasMedal[5] = true
-		localStorage.setItem("hasmedal" + 5)
+		setData("hasmedal" + 5)
 	}
 
 	wait(0.5, () => {
