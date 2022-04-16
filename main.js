@@ -4,6 +4,8 @@ import * as ApiStuff from './ApiStuff.js'
 
 kaboom({
 	plugins: [newgroundsPlugin],
+	width: 1170,
+	height: 660,
 	debug: false,
 })
 
@@ -122,7 +124,6 @@ scene("menuscene", () => {
 		}),
 		origin("right"),
 		pos(WIDTH - 10, HEIGHT - 20),
-		"amy"
 	])
 
 	add([
@@ -336,9 +337,7 @@ scene("gamescene", () => {
 				}
 			}
 			
-			if (!timer <= 0) {
-				timer -= dt()
-			}
+			if (!timer <= 0) timer -= dt()
 
 			if (timer <= 0) {
 				timer = 0
@@ -755,7 +754,7 @@ scene("gameover", () => {
 	if (!ApiStuff.HasMedal[5]) {
 		ngUnlockMedal(ApiStuff.Medal_IDS[5])
 		ApiStuff.HasMedal[5] = true
-		setData("hasmedal" + 5)
+		setData("hasmedal" + 5, true)
 	}
 
 	wait(0.5, () => {
