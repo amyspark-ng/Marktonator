@@ -2,7 +2,7 @@ import kaboom from "https://unpkg.com/kaboom@2000.1.6/dist/kaboom.mjs"
 import { newgroundsPlugin } from "https://unpkg.com/newgrounds-boom@1.1.1/src/newgrounds.mjs"
 import * as ApiStuff from './ApiStuff.js'
 
-kaboom({
+const k = kaboom({
 	plugins: [newgroundsPlugin],
 	width: 1170,
 	height: 660,
@@ -13,6 +13,7 @@ ngInit(ApiStuff.NgCore, ApiStuff.EncryptionKey)
 // CHARACTERS
 loadSprite("mark", "./sprites/characters/mark.png")
 loadSprite("notmark", "./sprites/characters/notmark.png")
+loadSprite("markish", "./sprites/characters/markish.png")
 loadSprite("bean", "./sprites/characters/bean.png")
 loadSprite("notkaboom", "./sprites/notkaboom.png")
 loadSprite("mark_S", "./sprites/mark_S.png")
@@ -63,11 +64,11 @@ for(let i = 0; i < ApiStuff.HasMedal.length; i++) {
 }
 
 let timePassed = 0
-
+let NG_timePassed = 0
 // # MENUSCENE
 scene("menuscene", () => {	
 	let bg = add([
-		rect(WIDTH + 50, HEIGHT + 50),
+		rect(WIDTH + 200, HEIGHT + 200),
 		color(colors[0]),
 		pos(-50, -50),
 	]);
@@ -116,30 +117,59 @@ scene("menuscene", () => {
 	])
 	
 	let amytext = add([
-		text("Game created by AmySparkNG - 2022", {
+		text("AmySparkNG - 2022 | v1.5", {
 			size: 15,
 			width: 880,
 			font: "sink",
 		}),
-		origin("right"),
-		pos(WIDTH - 10, HEIGHT - 20),
+		origin("left"),
+		pos(10, 640),
 	])
 
-	add([
-		text("HIGHSCORE: " + highscore, {
+	let highscoreText = add([
+		text(" ", {
 			size: 15,
 			width: 880,
 			font: "sink",
 		}),
 		origin("right"),
-		pos(amytext.pos.x, amytext.pos.y - 44),
+		pos(1160, 640),
 	])
+	
+	let funniTimes = 0
+
+	if (highscore == null) {
+		highscoreText.text = "HIGHSCORE: 0"
+	}
+
+	else {
+		highscoreText.text = `HIGHSCORE: ${highscore}`
+	}
 
 	play("score")
-	
+
 	onKeyPress("v", () => {
 		play("funni")
-	
+		shake(2)
+		funniTimes++
+		console.log(`Funny times pressed V: ${funniTimes}`)
+
+		if (funniTimes >= 10) {
+			funniTimes = 0
+			
+			markMenu.use(sprite("markish"))
+
+			wait(2.5, () => {
+				markMenu.use(sprite("mark"))
+			})
+
+			if (!ApiStuff.HasMedal[7]) {
+				ngUnlockMedal(ApiStuff.Medal_IDS[7])
+				ApiStuff.HasMedal[7] = true
+				setData("hasmedal" + 7, true)
+			}
+		}
+
 		if (!ApiStuff.HasMedal[6]) {
 			ngUnlockMedal(ApiStuff.Medal_IDS[6])
 			ApiStuff.HasMedal[6] = true
@@ -215,7 +245,7 @@ scene("gamescene", () => {
 	]) 
 		
 	let bg = add([
-		rect(WIDTH + 50, HEIGHT + 50),
+		rect(WIDTH + 200, HEIGHT + 200),
 		color(colors[0]),
 		layer("bg"),
 		pos(-50, -50),
@@ -243,6 +273,7 @@ scene("gamescene", () => {
 
 		timePassed = 0
 		difficulty = 0
+		NG_timePassed = 0		
 
 		if (!ApiStuff.HasMedal[0]) {
 			ngUnlockMedal(ApiStuff.Medal_IDS[0])
@@ -252,7 +283,8 @@ scene("gamescene", () => {
 
 		onUpdate("difficultyText", () => {
 			timePassed += dt()
-		
+			NG_timePassed++
+
 			let stringTime = Math.floor((timePassed + Number.EPSILON) * 100) / 100 + ""
 
 			if (timePassed <= 0)  difficulty = 0
@@ -342,7 +374,7 @@ scene("gamescene", () => {
 				timer = 0
 				timerText.text = "0.0 - You lost."
 				difficultyText.text = "Mark."
-				scoreTextG.text = "Score: Mark."
+				scoreTextG.text = "Mark."
 				destroyAll("bean")
 				destroyAll("mark")
 				destroyAll("notmark")
@@ -468,10 +500,12 @@ scene("gamescene", () => {
 			break
 		}
 
-		for (let i = 0; i < beanstoSpawn; i++) {
-			AddBean()
+		if (hasStarted) {
+			for (let i = 0; i < beanstoSpawn; i++) {
+				AddBean()
+			}
 		}
-	
+
 		// Spawn mark
 		let x = rand(WIDTH / 2, markDistance[0])
 		let y = rand(HEIGHT / 2, markDistance[1])
@@ -522,12 +556,16 @@ scene("gamescene", () => {
 			else {
 				notmark = add([
 					sprite("notmark"),
-					pos(mousePos()),
+					pos(),
 					area(),
 					scale(notmarkScale),
 					layer("mark"),
 					"notmark"
 				])
+
+				loop(0.8, () => {
+					notmark.pos = mousePos()
+				})
 			}
 		}
 	}
@@ -651,7 +689,6 @@ scene("gamescene", () => {
 		}
 	})
 
-	AddBean()
 	Spawn()
 	
 	onClick("bean", (bean) => {
@@ -667,7 +704,7 @@ scene("gamescene", () => {
 	})
 	
 	onClick("mark", (markP) => {
-		if (hasStarted === false) {
+		if (!hasStarted) {
 			hasStarted = true
 			StartGame()
 			onclickmarkstuff(markP)
@@ -688,7 +725,7 @@ scene("gamescene", () => {
 // # GAMEOVER
 scene("gameover", () => {	
 	add([
-		rect(WIDTH + 50, HEIGHT + 50),
+		rect(WIDTH + 200, HEIGHT + 200),
 		color(33, 41, 56),
 		pos(-50, -50),
 		layer("bg"),
@@ -748,7 +785,7 @@ scene("gameover", () => {
 	shake(20)
 
 	ngPostScore(ApiStuff.Scoreboard_IDS[0], score)
-	ngPostScore(ApiStuff.Scoreboard_IDS[1], timePassed)
+	ngPostScore(ApiStuff.Scoreboard_IDS[1], NG_timePassed)
 
 	if (!ApiStuff.HasMedal[5]) {
 		ngUnlockMedal(ApiStuff.Medal_IDS[5])
