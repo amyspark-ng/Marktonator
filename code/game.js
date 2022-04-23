@@ -621,7 +621,7 @@ scene("extra2", () => {
 	])
 	
 	let user4Text = add([
-		text(`#5 - ${scoreboard_names[3]} / SCORE: ${scoreboard_scores[3]}`, {
+		text(`#4 - ${scoreboard_names[3]} / SCORE: ${scoreboard_scores[3]}`, {
 			font: 'sinko',
 			size: 35
 		}),
