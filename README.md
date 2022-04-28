@@ -6,9 +6,9 @@ A fun game about clicking! Mark
 [Click here to get the links to it!](#links)
 
 ## - About -
-This code it's all messy and all in only one file but i really didn't wanted to bother myself with that, it's already enough of an achievement to have finished this game, actually it has kinda of its own merit to have made the game in 800 lines of code
+This code it's all messy and all in only one file but i really didn't wanted to bother myself with that, it's already enough of an achievement to have finished this game, actually it has kinda of its own merit to have made the game in almost 1800 lines of code
 
-Final MAJOR update of Marktonator uploaded! Featuring the messiest code you've ever seen and my only one file with 1600 lines of pure garbage and spaghetti
+Final MAJOR update of Marktonator uploaded! Featuring the messiest code you've ever seen and my only one file with 1690 lines of pure garbage and spaghetti
 
 Leaving that behind, _HUGEEE_ props to the kaboom server for helping me, and to [LajBel](lajbel.land) for helping me on build stuff, NG.io stuff and lots of stuff, really i appreciate you ty :pray:
 
