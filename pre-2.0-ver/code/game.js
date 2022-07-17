@@ -7,8 +7,6 @@ const k = kaboom({
 	width: 1170,
 	height: 660,
 	logMax: 10,
-	stretch: true,
-	letterbox: true
 })
 
 // #region stufff
