@@ -388,13 +388,15 @@ scene("extra1", () => {
 	})
 
 	arrow.onClick(() => {
-		play("select")
-		go("extra2")
+		play("wrong")
+		shake(2)
+		debug.log("NOT AVAILABLE")
 	})
 
 	onKeyPress("right", () => {
-		play("select")
-		go("extra2")
+		play("wrong")
+		shake(2)
+		debug.log("NOT AVAILABLE")
 	})
 
 	onKeyPress("backspace", () => {
@@ -569,7 +571,7 @@ scene("extra2", () => {
 	let scoreboard_scores = []
 	let scoreboard_names = []
 	
-	scoreboard = ngGetScores(ApiStuff.ScoreBoard)
+	// scoreboard = ngGetScores(ApiStuff.ScoreBoard)
 	
 	console.log(scoreboard)
 	
